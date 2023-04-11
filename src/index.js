@@ -1,4 +1,4 @@
-
+const checkname = require('../src/resources/middleware/middleware')
 const express = require('express')
 const app = express()
 const port = 3000
@@ -76,6 +76,8 @@ app.delete('/:id', function(req, res) {
     users.splice(users.indexOf(user), 1)
     res.status(204).json()
 })
+//middleware
+
 app.listen(port, () => {
     console.log(`Example app listening on port ${port}`)
 })

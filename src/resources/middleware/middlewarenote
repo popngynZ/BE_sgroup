@@ -1,0 +1,18 @@
+## middleware
+### ý nghĩa 
+-phần mềm trung gian (đứng giữa các thành phần trong mô hình phần mềm)
+
+browser (clinet)   ==========request===============>> sever (node)
+browser (clinet) <<==========response===========      sever (node)
+
+### Vai Trò
+same như bác bảo vệ
+Nhà ============> bác bảo vệ (middleware): sự kiện (soát vé)
+Nhà  <<========= sự kiện
+
+1. soát vé                    (kiểm soát ---> validation)
+2. cho phép vào
+3. ko cho vào                 (validation pass----> cho vào)
+4. Chỉnh sửa/ thay đổi
+
+### ứng dụng
