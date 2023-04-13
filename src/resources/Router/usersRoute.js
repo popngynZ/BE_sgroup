@@ -1,9 +1,9 @@
 const express = require('express');
 const userRouter = express.Router();
-const connection = require('../database/connect')
+const connect = require('../database/connect')
 
 let users = []
-connection.query('SELECT * from Users', (err, rs) => {
+connect.query('SELECT * from Users', (err, rs) => {
     users = JSON.parse(JSON.stringify(rs))
     console.log(users);
 })
@@ -18,7 +18,7 @@ function validate(req, res, next) {
 
 
 userRouter.get('/', (req, res) => {
-    connection.query('SELECT * from Users', (err, rs) => {
+    connect.query('SELECT * from Users', (err, rs) => {
         users = JSON.parse(JSON.stringify(rs))
         console.log(users);
     })
@@ -27,7 +27,7 @@ userRouter.get('/', (req, res) => {
 
 userRouter.get(`/:id`, (req, res) => {
     const id = req.params.id
-    connection.query(`SELECT * from Users where id='${id}'`, (err, rs) => {
+    connect.query(`SELECT * from Users where id='${id}'`, (err, rs) => {
         let user = JSON.parse(JSON.stringify(rs))
         console.log(user);
         users = [...users, user]
@@ -41,7 +41,7 @@ userRouter.put('/user/:id', (req, res) => {
     const fullname = req.body.fullname
     const age = Number.parseInt(req.body.age)
     const gender = Boolean(req.body.gender)
-    connection.query(`UPDATE Users SET fullname ='${fullname}', age=${age}, gender=${gender} WHERE id=${id}`, (err, rs) => {
+    connect.query(`UPDATE Users SET fullname ='${fullname}', age=${age}, gender=${gender} WHERE id=${id}`, (err, rs) => {
         console.log(err);
         console.log(rs);
     })
@@ -55,7 +55,7 @@ userRouter.post('/user', validate, (req, res) => {
     const age = Number.parseInt(req.body.age)
     const gender = Boolean(req.body.gender)
     console.log({ fullname, age, gender });
-    connection.query(`insert into Users(fullname, age, gender) values ('${fullname}', ${age}, ${gender})`, (err, rs) => {
+    connect.query(`insert into Users(fullname, age, gender) values ('${fullname}', ${age}, ${gender})`, (err, rs) => {
         console.log(err);
         console.log(rs);
         users = [...users, { id, fullname, age, gender }]
@@ -65,7 +65,7 @@ userRouter.post('/user', validate, (req, res) => {
 
 userRouter.delete('/user/:id', (req, res) => {
     const id = Number.parseInt(req.params.id)
-    connection.query(`DELETE FROM Users WHERE id=${id}`, (err, rs) => {
+    connect.query(`DELETE FROM Users WHERE id=${id}`, (err, rs) => {
         console.log(rs);
     })
     users = users.filter(item => item.id !== Number.parseInt(id))
