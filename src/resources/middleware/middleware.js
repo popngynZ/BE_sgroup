@@ -1,4 +1,4 @@
-function checkname(req, res, next) {
+function checknameMiddleware(req, res, next) {
     // full ký tự tiếng việt
     const kytu = /^[a-zA-ZÀÁÂÃÈÉÊÌÍÒÓÔÕÙÚĂĐĨŨƠàáâãèéêìíòóôõùúăđĩũơƯĂẠẢẤẦẨẪẬẮẰẲẴẶẸẺẼỀỀỂẾưăạảấầẩẫậắằẳẵặẹẻẽềềểếỄỆỈỊỌỎỐỒỔỖỘỚỜỞỠỢỤỦỨỪễệỉịọỏốồổỗộớờởỡợụủứừỬỮỰỲỴÝỶỸửữựỳỵỷỹ\s\W|_]+$/;
     const user = req.body
@@ -11,4 +11,4 @@ function checkname(req, res, next) {
     }
 }
 
-module.exports = checkname
+module.exports = checknameMiddleware
