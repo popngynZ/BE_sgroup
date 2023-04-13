@@ -1,0 +1,24 @@
+# Buổi 3 - Database
+
+- Vấn đề cần giải quyết:
+    - Trong bài tập lần trước, mỗi lần restart server là mỗi lần chúng ta bị mất dữ liệu
+    - Hãy khắc phục điều này bằng cách lưu trữ Dữ liệu trong MySQL
+- Yêu cầu áp dụng:
+    - Tạo 2 file để khởi tạo MySQL connection và khởi tạo CSDL
+        - Tạo file tại database/connection.js để khởi tạo connection
+        - Tạo file tại database/init.js để khởi tạo các table trong CSDL và thêm dữ liệu ban đầu
+        - Sau khi thực hiện 2 yêu cầu trên, chỉ cần chạy dòng lệnh sau, chúng ta sẽ có 1 table user trong MySQL
+            
+            ```jsx
+            node database/init.js // Chạy lệnh này ban đầu để có thể sử dụng CSDL
+            ```
+            
+        - Đồng thời, tại những nơi cần query tới CSDL, chỉ cần chạy dòng lệnh sau để có thể khởi tạo connection:
+        
+        ```jsx
+        const connection = require("database/connection")
+        ```
+        
+    - Với các API đã xây dựng lúc trước hãy thực hiện truy vấn dữ liệu từ MySQL thay vì dữ liệu mảng như trước
+        - Các API đều giữ nguyên như bài trước
+        - Tuy nhiên đối phần xử lý dữ liệu, mọi thao tác liên quan đến dữ liệu cần thực hiện bằng các query CSDL MySQL.

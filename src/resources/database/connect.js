@@ -5,6 +5,7 @@ app.listen(3000,function(){
 });
 // var mysql = require('mysql');
 var mysql = require('mysql2');
+const { connect } = require('../Router/usersRoute');
 
 var con = mysql.createConnection({
     host: "",
@@ -18,4 +19,7 @@ var con = mysql.createConnection({
     console.log("Connected!!!")
   });
   
-// node src/resources/common/connect.js
+
+  
+  module.exports = connect
+// node src/resources/database/connect.js
