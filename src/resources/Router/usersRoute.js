@@ -1,77 +1,84 @@
-const express = require('express');
+const checknameMiddleware = require('../middleware/middleware')
+const express = require('express')
 const userRouter = express.Router();
-const connect = require('../database/connect')
+//khai báo chưa có thăng userRouter cho thằng app
+const app = express()
+const port = 3000
+app.use(express.json()) // for parsing application/json
+// app.use(express.urlencoded({ extended: true }))
 
-let users = []
-connect.query('SELECT * from Users', (err, rs) => {
-    users = JSON.parse(JSON.stringify(rs))
-    console.log(users);
-})
-
-function validate(req, res, next) {
-    if ((req.body.fullname).length > 0 && (Number.parseInt(req.body.age)) && Boolean(req.body.gender)) {
-        next()
-    } else {
-        res.sendStatus(400)
+let users = [
+    {
+        "id": 1,
+        "fullname": "Nguyen Huy Tuong",
+        "gender": true,
+        "age": 18
+    },
+    {
+        "id": 2,
+        "fullname": "Nguyen Thi Tuong",
+        "gender": false,
+        "age": 15
     }
-}
-
-
-userRouter.get('/', (req, res) => {
-    connect.query('SELECT * from Users', (err, rs) => {
-        users = JSON.parse(JSON.stringify(rs))
-        console.log(users);
-    })
-    res.sendStatus(200).json(users)
+]
+userRouter.get('/link', (req, res) => {
+    res.send(users)
 })
-
-userRouter.get(`/:id`, (req, res) => {
-    const id = req.params.id
-    connect.query(`SELECT * from Users where id='${id}'`, (err, rs) => {
-        let user = JSON.parse(JSON.stringify(rs))
-        console.log(user);
-        users = [...users, user]
-    })
-    res.sendStatus(200).json(users)
-
+//lấy dữ liệu
+userRouter.get('/link/:id', (req, res) => {
+//parseIn trả về số nguyên
+    const user = users.find(users => users.id === parseInt(req.params.id))
+    if (!user) res.status(404).send('ID Khong ton tai')
+    res.send(user)
 })
-
-userRouter.put('/user/:id', (req, res) => {
-    const id = Number.parseInt(req.params.id)
-    const fullname = req.body.fullname
-    const age = Number.parseInt(req.body.age)
-    const gender = Boolean(req.body.gender)
-    connect.query(`UPDATE Users SET fullname ='${fullname}', age=${age}, gender=${gender} WHERE id=${id}`, (err, rs) => {
-        console.log(err);
-        console.log(rs);
-    })
-    users = users.map(item => (item.id === Number.parseInt(id)) ? { id, fullname, age, gender } : item)
-    res.sendStatus(204)
-})
-
-userRouter.post('/user', validate, (req, res) => {
-    const id = users[users.length - 1].id + 1
-    const fullname = req.body.fullname
-    const age = Number.parseInt(req.body.age)
-    const gender = Boolean(req.body.gender)
-    console.log({ fullname, age, gender });
-    connect.query(`insert into Users(fullname, age, gender) values ('${fullname}', ${age}, ${gender})`, (err, rs) => {
-        console.log(err);
-        console.log(rs);
-        users = [...users, { id, fullname, age, gender }]
-    })
-    res.sendStatus(201)
-})
-
-userRouter.delete('/user/:id', (req, res) => {
-    const id = Number.parseInt(req.params.id)
-    connect.query(`DELETE FROM Users WHERE id=${id}`, (err, rs) => {
-        console.log(rs);
-    })
-    users = users.filter(item => item.id !== Number.parseInt(id))
-    res.sendStatus(204)
+//thêm dữu liệu
+userRouter.post('/link/add', function(req, res) {
+    // console.log(req.body);
+    const user = {
+        id : users[users.length - 1].id + 1,
+        fullname : req.body.fullname,
+        gender : req.body.gender,
+        age : req.body.age
+    }
+    // thêm phần tử ở cuối mảng
+    users.push(user);
+    //users nó lưu vào đây nhớ đổi bên post man thành json luôn
+    res.status(201).json(users);
+    // res.send(users)
 })
 
 
+// sửa dữ liệu
+userRouter.put('/:id', function(req, res) {
+    const user = users.find(user => 
+        user.id === parseInt(req.params.id)
+    )
+    if(!user) {
+        res.status(404).json('ID không tồn tại')
+    }
+    if(Object.keys(req.body).length !== 0) {
+        user.fullname = req.body.fullname
+        user.gender = req.body.gender
+        user.age = req.body.age
+        res.status(200).json(user)
+    }
+    else {
+        res.status(204).json()
+    }
+})
 
-module.exports = userRouter;
+// xóa dữ liệu
+userRouter.delete('/:id', function(req, res) {
+    const user = users.find(user => 
+        user.id === parseInt(req.params.id)
+    )
+    if(!user) {
+        res.status(404).json('ID không tồn tại')
+    }
+        users.splice(users.indexOf(user), 1)
+        res.status(204).json()
+})
+//middleware
+
+
+module.exports = userRouter
