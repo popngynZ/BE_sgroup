@@ -14,8 +14,8 @@
 const connection = require('./connect')
 
 
-
-connection.query(`drop table Student`)
+//cho lần chạy 2
+// connection.query(`drop table Student`)
 connection.query(`CREATE TABLE Student (
   id int NOT NULL AUTO_INCREMENT,
   fullName varchar(255) NOT NULL,

@@ -2,7 +2,7 @@ var express = require('express');
 var app = express();
 // var mysql = require('mysql');
 var mysql = require('mysql2');
-const connect = require('../Router/usersRoute');
+// const connect = require('../Router/usersRoute');
 
 var con = mysql.createConnection({
     host: "localhost",
@@ -25,5 +25,5 @@ var con = mysql.createConnection({
   //     console.log("Table created");
   //   });});
 
-module.exports = connect;
+module.exports = con;
 // node src/resources/database/connect.js
