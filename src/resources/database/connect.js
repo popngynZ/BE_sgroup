@@ -1,25 +1,29 @@
 var express = require('express');
 var app = express();
-app.listen(3000,function(){
-    console.log('Node server running @ http://localhost:3000')
-});
 // var mysql = require('mysql');
 var mysql = require('mysql2');
-const { connect } = require('../Router/usersRoute');
+const connect = require('../Router/usersRoute');
 
 var con = mysql.createConnection({
-    host: "",
+    host: "localhost",
     user: "root",
     password: "123456789",
-    // database: "your_database"
+    database: "noood"
   });
 
   con.connect(function(err) {
     if (err) throw err;
-    console.log("Connected!!!")
+    console.log("Connected ok!!!")
   });
   
+  // con.connect(function(err) {
+  //   if (err) throw err;
+  //   console.log("Connected!");
+  //   var sql = "CREATE TABLE customers2 (name VARCHAR(255), address VARCHAR(255))";
+  //   con.query(sql, function (err, result) {
+  //     if (err) throw err;
+  //     console.log("Table created");
+  //   });});
 
-  
-  module.exports = connect
+module.exports = connect;
 // node src/resources/database/connect.js
